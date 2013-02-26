@@ -172,11 +172,13 @@ via reap() which is run every 3 minutes.
 
 		<cfset setThreadingAdapter(variables.utils.createThreadingAdapter()) />
 
-		<!--- Setup the cache by running a flush() --->
-		<cfif getParameter("enableInitialFlush", true)>
-			<cfset this.flush() />
-		<cfelse>
-			<cfset getStorage() />
+		<!--- Setup the cache by running a flush() only if it is not the session --->
+		<cfif getScope() NEQ "session">
+			<cfif getParameter("enableInitialFlush", true)>
+				<cfset this.flush() />
+			<cfelse>
+				<cfset getStorage() />
+			</cfif>
 		</cfif>
 	</cffunction>
 
